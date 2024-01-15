@@ -32,7 +32,8 @@ class AlgoritmoGenetico:
         self.probabilidadMutIndiv = probabilidadMutIndiv
         self.probabilidadMutGen = probabilidadMutGen
         self.puntoCruzaFijo = self.nBx // 2  # Punto de cruza fijo
-
+        
+    # Función para mutar un individuo con negación del bit
     def mutacion(self, individual):
         if random.random() <= self.probabilidadMutIndiv:
             for i in range(self.nBx):

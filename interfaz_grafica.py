@@ -1,9 +1,8 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from algoritmo_genetico import AlgoritmoGenetico  # Asegúrate de ajustar la importación según la ubicación de tu archivo algoritmo_genetico.py
+from algoritmo_genetico import AlgoritmoGenetico
 import matplotlib.pyplot as plt
-
 
 class InterfazGrafica:
     def __init__(self, root):
@@ -50,40 +49,41 @@ class InterfazGrafica:
         ttk.Button(self.root, text="Minimizar", command=lambda: self.ejecutar_algoritmo(True)).grid(row=i+1, column=1, padx=(3, 0))
 
     def ejecutar_algoritmo(self, minimize):
-       try:
-        precision = float(self.precision_var.get())
-        rango = [float(self.min_x_var.get()), float(self.max_x_var.get())]
-        limiteGeneraciones = int(self.max_generations_var.get())
-        limitePoblacion = int(self.max_population_var.get())
-        tamanioPoblacionInicial = int(self.initial_population_var.get())
-        probabilidadMutIndiv = float(self.individual_mutation_prob_var.get())
-        probabilidadMutGen = float(self.gen_mutation_prob_var.get())
+        try:
+            precision = float(self.precision_var.get())
+            rango = [float(self.min_x_var.get()), float(self.max_x_var.get())]
+            limiteGeneraciones = int(self.max_generations_var.get())
+            limitePoblacion = int(self.max_population_var.get())
+            tamanioPoblacionInicial = int(self.initial_population_var.get())
+            probabilidadMutIndiv = float(self.individual_mutation_prob_var.get())
+            probabilidadMutGen = float(self.gen_mutation_prob_var.get())
 
-        self.ag = AlgoritmoGenetico(precision, rango, limiteGeneraciones, limitePoblacion, tamanioPoblacionInicial,
-                                    probabilidadMutIndiv, probabilidadMutGen)
-        self.ag.iniciar(minimize)
-        self.visualizar_generaciones()
+            self.ag = AlgoritmoGenetico(precision, rango, limiteGeneraciones, limitePoblacion, tamanioPoblacionInicial,
+                                        probabilidadMutIndiv, probabilidadMutGen)
+            self.ag.iniciar(minimize)
+            self.visualizar_generaciones()
 
-        # Obtener información del individuo más apto
-        mejor_individuo = self.ag.mejoresCasos[-1]
-        generacion_mejor_individuo = mejor_individuo[0]
-        cromosoma_mejor_individuo = mejor_individuo[1]
-        fenotipo_mejor_individuo = mejor_individuo[2]
-        fitness_mejor_individuo = mejor_individuo[3]
+            # Obtener información del mejor individuo
+            mejor_individuo = self.ag.poblacion[0]
+            genotipo_mejor_individuo = mejor_individuo[0]
+            generacion_mejor_individuo = mejor_individuo[1]
+            fenotipo_mejor_individuo = mejor_individuo[2]
+            fitness_mejor_individuo = mejor_individuo[3]
 
-        # Formatear los resultados con mayor precisión
-        mensaje_resultado = (
-            f"Generación: {generacion_mejor_individuo}\n"
-            f"Cromosoma: {cromosoma_mejor_individuo}\n"
-            f"Fenotipo: {fenotipo_mejor_individuo}\n"
-            f"Fitness: {fitness_mejor_individuo:.10f}"  # Ajusta la precisión según tus necesidades
-        )
+            # Formatear el mensaje con mayor precisión
+            mensaje_mejor_individuo = (
+                f"Genotipo: {genotipo_mejor_individuo}\n"
+                f"generación: {generacion_mejor_individuo:.16f}\n"
+                f"Fenotipo: {fenotipo_mejor_individuo:.16f}\n"
+                f"Fitness: {fitness_mejor_individuo:.16f}"
+            )
 
-        # Mostrar información del individuo más apto
-        messagebox.showinfo("Individuo más apto", mensaje_resultado)
-       except ValueError as e:
-        messagebox.showerror("Error", f"Error de entrada: {str(e)}")
-        
+            # Mostrar el mensaje con el mejor individuo
+            messagebox.showinfo("Mejor individuo", mensaje_mejor_individuo)
+
+        except ValueError as e:
+            messagebox.showerror("Error", f"Error de entrada: {str(e)}")
+
     def visualizar_generaciones(self, pausa_entre_generaciones=0.5):
         for i in range(len(self.ag.mejoresCasos)):
             self.mostrar_estadisticas(i)
