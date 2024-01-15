@@ -24,12 +24,13 @@ class InterfazGrafica:
         self.max_population_var = tk.IntVar(value=7)
         self.individual_mutation_prob_var = tk.DoubleVar(value=0.80)
         self.gen_mutation_prob_var = tk.DoubleVar(value=0.20)
-
+        self.formula_var = tk.StringVar(value="((x ** 3) / 100) * sin(x) + (x ** 2) * cos(x) + y ** 2")
         # Componentes de la interfaz
         self.crear_componentes()
 
     def crear_componentes(self):
         etiquetas_entradas = [
+            ("Ayuda (Fórmula):", self.formula_var),
             ("Precisión para X:", self.precision_var),
             ("Valor mínimo para X:", self.min_x_var),
             ("Valor máximo para X:", self.max_x_var),
